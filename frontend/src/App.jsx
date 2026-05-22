@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Courses from "./pages/Courses";
 import Dashboard from "./pages/Dashboard";
 import AITools from "./pages/AITools";
+import CourseDetails from "./pages/CourseDetails";
 import "./App.css";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
+            <Route path="/courses/:id" element={<CourseDetails />} />
           </Routes>
         </main>
       </div>

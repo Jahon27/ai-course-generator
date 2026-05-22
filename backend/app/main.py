@@ -7,9 +7,10 @@ import io
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 import os
+import json
 
 from .database import Base, engine, get_db
-from .models import User, Course, UserCourseProgress
+from .models import User, Course, UserCourseProgress, Lesson, GeneratedQuiz
 from .ai_service import generate_quiz_from_text
 from .schemas import (
     UserRegister,
@@ -20,7 +21,11 @@ from .schemas import (
     EnrollRequest,
     ProgressResponse,
     GenerateQuizRequest,
-    GenerateQuizResponse
+    GenerateQuizResponse,
+    LessonCreate,
+    LessonResponse,
+    SaveQuizResultRequest,
+    SavedQuizResponse
 )
 from .auth import hash_password, verify_password, create_access_token
 
@@ -205,3 +210,68 @@ async def generate_quiz_from_pdf(
     result = generate_quiz_from_text(lecture_text)
 
     return result
+
+@app.post("/lessons", response_model=LessonResponse)
+def create_lesson(
+    lesson: LessonCreate,
+    db: Session = Depends(get_db)
+):
+    course = db.query(Course).filter(Course.id == lesson.course_id).first()
+
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    new_lesson = Lesson(
+        course_id=lesson.course_id,
+        title=lesson.title,
+        content=lesson.content,
+        order_number=lesson.order_number
+    )
+
+    db.add(new_lesson)
+    db.commit()
+    db.refresh(new_lesson)
+
+    return new_lesson
+
+
+@app.get("/courses/{course_id}/lessons", response_model=list[LessonResponse])
+def get_course_lessons(
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    lessons = db.query(Lesson).filter(
+        Lesson.course_id == course_id
+    ).order_by(Lesson.order_number).all()
+
+    return lessons
+
+@app.post("/quizzes/save", response_model=SavedQuizResponse)
+def save_quiz_result(
+    request: SaveQuizResultRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    saved_quiz = GeneratedQuiz(
+        user_id=current_user.id,
+        summary=request.summary,
+        questions_json=json.dumps([q.model_dump() for q in request.questions]),
+        score=request.score,
+        total_questions=request.total_questions
+    )
+
+    db.add(saved_quiz)
+    db.commit()
+    db.refresh(saved_quiz)
+
+    return saved_quiz
+
+
+@app.get("/me/quizzes", response_model=list[SavedQuizResponse])
+def get_my_quizzes(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return db.query(GeneratedQuiz).filter(
+        GeneratedQuiz.user_id == current_user.id
+    ).order_by(GeneratedQuiz.created_at.desc()).all()

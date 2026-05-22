@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
+import { Link } from "react-router-dom";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
@@ -62,6 +63,9 @@ export default function Courses() {
           <p>{course.description}</p>
           <p><strong>Duration:</strong> {course.duration}</p>
 
+            <Link to={`/courses/${course.id}`}>
+              <button>View Lessons</button>
+            </Link>
           <button onClick={() => enroll(course.id)}>Enroll Course</button>
         </div>
       ))}

@@ -67,3 +67,39 @@ class QuizQuestion(BaseModel):
 class GenerateQuizResponse(BaseModel):
     summary: str
     questions: List[QuizQuestion]
+
+class LessonCreate(BaseModel):
+    course_id: int
+    title: str
+    content: str
+    order_number: int
+
+
+class LessonResponse(BaseModel):
+    id: int
+    course_id: int
+    title: str
+    content: str
+    order_number: int
+
+    class Config:
+        from_attributes = True
+
+
+class SaveQuizResultRequest(BaseModel):
+    summary: str
+    questions: list[QuizQuestion]
+    score: int
+    total_questions: int
+
+
+class SavedQuizResponse(BaseModel):
+    id: int
+    user_id: int
+    summary: str
+    questions_json: str
+    score: int
+    total_questions: int
+
+    class Config:
+        from_attributes = True

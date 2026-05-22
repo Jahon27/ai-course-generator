@@ -32,3 +32,24 @@ class UserCourseProgress(Base):
     progress_percent = Column(Integer, default=0)
     completed_lessons = Column(Integer, default=0)
     updated_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class Lesson(Base):
+    __tablename__ = "lessons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
+    title = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    order_number = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class GeneratedQuiz(Base):
+    __tablename__ = "generated_quizzes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    summary = Column(Text, nullable=False)
+    questions_json = Column(Text, nullable=False)
+    score = Column(Integer, nullable=True)
+    total_questions = Column(Integer, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
