@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./backend
+    container_name: ai_course_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    networks:
+      - ai_course_network
+
+  db:
+    image: postgres:15
+    container_name: ai_course_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_course_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      ai_course_network:
+        aliases:
+          - db
+
+volumes:
+  postgres_data:
+
+networks:
+  ai_course_network:
+    driver: bridge

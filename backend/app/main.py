@@ -1,0 +1,166 @@
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from jose import jwt, JWTError
+import os
+
+from .database import Base, engine, get_db
+from .models import User, Course, UserCourseProgress
+from .schemas import (
+    UserRegister,
+    UserLogin,
+    UserResponse,
+    CourseCreate,
+    CourseResponse,
+    EnrollRequest,
+    ProgressResponse
+)
+from .auth import hash_password, verify_password, create_access_token
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title="AI Course Generator API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173",
+        "http://localhost:5174"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+security = HTTPBearer()
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_db)
+):
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(
+            token,
+            os.getenv("SECRET_KEY"),
+            algorithms=[os.getenv("ALGORITHM")]
+        )
+        email = payload.get("sub")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return user
+
+@app.get("/")
+def root():
+    return {"message": "AI Course Generator API is running"}
+
+
+@app.post("/auth/register", response_model=UserResponse)
+def register(user: UserRegister, db: Session = Depends(get_db)):
+
+    existing_user = db.query(User).filter(User.email == user.email).first()
+
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    new_user = User(
+        email=user.email,
+        password_hash=hash_password(user.password)
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
+
+
+@app.post("/auth/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+
+    existing_user = db.query(User).filter(User.email == user.email).first()
+
+    if not existing_user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    if not verify_password(user.password, existing_user.password_hash):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    access_token = create_access_token(
+        data={"sub": existing_user.email}
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
+
+@app.post("/courses", response_model=CourseResponse)
+def create_course(course: CourseCreate, db: Session = Depends(get_db)):
+
+    new_course = Course(
+        title=course.title,
+        description=course.description,
+        category=course.category,
+        level=course.level,
+        duration=course.duration
+    )
+
+    db.add(new_course)
+    db.commit()
+    db.refresh(new_course)
+
+    return new_course
+
+
+@app.get("/courses", response_model=list[CourseResponse])
+def get_courses(db: Session = Depends(get_db)):
+
+    courses = db.query(Course).all()
+
+    return courses
+
+@app.post("/courses/enroll", response_model=ProgressResponse)
+def enroll_course(
+    request: EnrollRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    course = db.query(Course).filter(Course.id == request.course_id).first()
+
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    existing_progress = db.query(UserCourseProgress).filter(
+        UserCourseProgress.user_id == current_user.id,
+        UserCourseProgress.course_id == request.course_id
+    ).first()
+
+    if existing_progress:
+        return existing_progress
+
+    progress = UserCourseProgress(
+        user_id=current_user.id,
+        course_id=request.course_id,
+        progress_percent=0,
+        completed_lessons=0
+    )
+
+    db.add(progress)
+    db.commit()
+    db.refresh(progress)
+
+    return progress
+
+
+@app.get("/me/dashboard", response_model=list[ProgressResponse])
+def get_dashboard(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return db.query(UserCourseProgress).filter(
+        UserCourseProgress.user_id == current_user.id
+    ).all()
