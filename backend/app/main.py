@@ -1,12 +1,16 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import UploadFile, File
+from pypdf import PdfReader
+import io
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 import os
 
 from .database import Base, engine, get_db
 from .models import User, Course, UserCourseProgress
+from .ai_service import generate_quiz_from_text
 from .schemas import (
     UserRegister,
     UserLogin,
@@ -14,7 +18,9 @@ from .schemas import (
     CourseCreate,
     CourseResponse,
     EnrollRequest,
-    ProgressResponse
+    ProgressResponse,
+    GenerateQuizRequest,
+    GenerateQuizResponse
 )
 from .auth import hash_password, verify_password, create_access_token
 
@@ -164,3 +170,38 @@ def get_dashboard(
     return db.query(UserCourseProgress).filter(
         UserCourseProgress.user_id == current_user.id
     ).all()
+
+@app.post("/ai/generate-quiz", response_model=GenerateQuizResponse)
+def generate_quiz(
+    request: GenerateQuizRequest,
+    current_user: User = Depends(get_current_user)
+):
+    result = generate_quiz_from_text(request.lecture_text)
+    return result
+
+@app.post("/ai/generate-quiz-from-pdf")
+async def generate_quiz_from_pdf(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    pdf_bytes = await file.read()
+
+    pdf_reader = PdfReader(io.BytesIO(pdf_bytes))
+
+    lecture_text = ""
+
+    for page in pdf_reader.pages[:3]:
+        text = page.extract_text()
+
+        if text:
+            lecture_text += text + "\n"
+
+    if not lecture_text.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Could not extract text from PDF"
+        )
+
+    result = generate_quiz_from_text(lecture_text)
+
+    return result

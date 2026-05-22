@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-
+from typing import List
 
 class UserRegister(BaseModel):
     email: EmailStr
@@ -52,3 +52,18 @@ class ProgressResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class GenerateQuizRequest(BaseModel):
+    lecture_text: str
+
+
+class QuizQuestion(BaseModel):
+    question: str
+    options: List[str]
+    answer: str
+
+
+class GenerateQuizResponse(BaseModel):
+    summary: str
+    questions: List[QuizQuestion]
