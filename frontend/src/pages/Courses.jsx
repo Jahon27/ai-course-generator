@@ -4,10 +4,30 @@ import { Link } from "react-router-dom";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState([]);
 
   useEffect(() => {
     fetchCourses();
+    fetchEnrolledCourses();
   }, []);
+
+  async function fetchEnrolledCourses() {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const response = await api.get("/me/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setEnrolledCourseIds(response.data.map((item) => item.course_id));
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
   async function fetchCourses() {
       try {
@@ -41,6 +61,7 @@ export default function Courses() {
       );
 
       alert("Enrolled successfully!");
+      setEnrolledCourseIds([...enrolledCourseIds, courseId]);
     } catch (error) {
       alert("Enrollment failed");
     }
@@ -66,7 +87,13 @@ export default function Courses() {
             <Link to={`/courses/${course.id}`}>
               <button>View Lessons</button>
             </Link>
-          <button onClick={() => enroll(course.id)}>Enroll Course</button>
+          {enrolledCourseIds.includes(course.id) ? (
+          <button className="enrolled-badge">✓ Enrolled</button>
+        ) : (
+          <button onClick={() => enroll(course.id)}>
+            Enroll Course
+          </button>
+        )}
         </div>
       ))}
     </div>

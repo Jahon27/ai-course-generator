@@ -11,6 +11,7 @@ export default function CourseDetails() {
   useEffect(() => {
     fetchCourse();
     fetchLessons();
+    checkEnrollment();
   }, [id]);
 
   async function fetchCourse() {
@@ -27,9 +28,6 @@ export default function CourseDetails() {
       },
     });
     setLessons(response.data);
-    if (response.data.length > 0) {
-      setEnrolled(true);
-    }
   }
 
   async function enrollCourse() {
@@ -53,6 +51,23 @@ export default function CourseDetails() {
     alert("Enrolled successfully!");
     setEnrolled(true);
   }
+
+  async function checkEnrollment() {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      const response = await api.get(
+        `/courses/${id}/enrollment`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setEnrolled(response.data.enrolled);
+    }
 
   if (!course) {
     return <div className="card">Loading course...</div>;

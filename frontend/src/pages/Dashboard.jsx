@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api/api";
 
 export default function Dashboard() {
@@ -298,25 +299,42 @@ export default function Dashboard() {
     )}
 
       <div className="card-grid" style={{ marginBottom: "32px" }}>
-        <div className="card">
-          <h2>🔥 Current Streak</h2>
-          <p style={{ fontSize: "32px", fontWeight: "800" }}>3 days</p>
-        </div>
+          <div className="card">
+            <h2>📚 Courses In Progress</h2>
 
-        <div className="card">
-          <h2>🧠 Completed Quizzes</h2>
-          <p style={{ fontSize: "32px", fontWeight: "800" }}>
-            {completedQuizzes}
-          </p>
-        </div>
+            <p style={{ fontSize: "32px", fontWeight: "800" }}>
+              {progress.length}
+            </p>
 
-        <div className="card">
-          <h2>📊 Average Score</h2>
-          <p style={{ fontSize: "32px", fontWeight: "800" }}>
-            {averageScore}%
-          </p>
+            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+              Active enrolled courses
+            </p>
+          </div>
+
+          <div className="card">
+            <h2>🧠 Completed Quizzes</h2>
+
+            <p style={{ fontSize: "32px", fontWeight: "800" }}>
+              {completedQuizzes}
+            </p>
+
+            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+              AI quizzes completed
+            </p>
+          </div>
+
+          <div className="card">
+            <h2>📊 Average Score</h2>
+
+            <p style={{ fontSize: "32px", fontWeight: "800" }}>
+              {averageScore}%
+            </p>
+
+            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+              Across all quiz attempts
+            </p>
+          </div>
         </div>
-      </div>
 
       <h2>Enrolled Courses</h2>
 
@@ -326,13 +344,17 @@ export default function Dashboard() {
         ) : (
           progress.map((item) => (
             <div key={item.id} className="card">
-              <h3>Course #{item.course_id}</h3>
+              <h3>{item.course_title}</h3>
               <p>
-                <strong>Completed lessons:</strong> {item.completed_lessons}
-              </p>
-              <p>
-                <strong>Progress:</strong> {item.progress_percent}%
-              </p>
+                  <strong>Completed lessons:</strong> {item.completed_lessons} / {item.total_lessons}
+                </p>
+                <p>
+                  <strong>Progress:</strong> {item.progress_percent}%
+                </p>
+
+              <Link to={`/courses/${item.course_id}`}>
+                <button>Continue Course</button>
+              </Link>
 
               <div className="progress-bar">
                 <div

@@ -171,14 +171,45 @@ def enroll_course(
     return progress
 
 
-@app.get("/me/dashboard", response_model=list[ProgressResponse])
+@app.get("/me/dashboard")
 def get_dashboard(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return db.query(UserCourseProgress).filter(
+    progress_items = db.query(UserCourseProgress).filter(
         UserCourseProgress.user_id == current_user.id
     ).all()
+
+    result = []
+
+    for item in progress_items:
+        course = db.query(Course).filter(Course.id == item.course_id).first()
+
+        total_lessons = db.query(Lesson).filter(
+            Lesson.course_id == item.course_id
+        ).count()
+
+        completed_lessons = db.query(LessonProgress).join(Lesson).filter(
+            LessonProgress.user_id == current_user.id,
+            LessonProgress.completed == True,
+            Lesson.course_id == item.course_id
+        ).count()
+
+        progress_percent = 0
+
+        if total_lessons > 0:
+            progress_percent = round((completed_lessons / total_lessons) * 100)
+
+        result.append({
+            "id": item.id,
+            "course_id": item.course_id,
+            "course_title": course.title if course else "Unknown Course",
+            "completed_lessons": completed_lessons,
+            "total_lessons": total_lessons,
+            "progress_percent": progress_percent
+        })
+
+    return result
 
 @app.post("/ai/generate-quiz", response_model=GenerateQuizResponse)
 def generate_quiz(
@@ -404,3 +435,18 @@ def complete_lesson(
     db.commit()
 
     return {"message": "Lesson completed"}
+
+@app.get("/courses/{course_id}/enrollment")
+def check_enrollment(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    enrollment = db.query(UserCourseProgress).filter(
+        UserCourseProgress.user_id == current_user.id,
+        UserCourseProgress.course_id == course_id
+    ).first()
+
+    return {
+        "enrolled": enrollment is not None
+    }
