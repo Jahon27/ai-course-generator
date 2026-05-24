@@ -1,4 +1,14 @@
 services:
+  frontend:
+    build: ./frontend
+    container_name: ai_course_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - ai_course_network
+
   backend:
     build: ./backend
     container_name: ai_course_backend

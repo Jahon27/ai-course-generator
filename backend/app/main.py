@@ -10,7 +10,7 @@ import os
 import json
 
 from .database import Base, engine, get_db
-from .models import User, Course, UserCourseProgress, Lesson, GeneratedQuiz
+from .models import User, Course, UserCourseProgress, Lesson, GeneratedQuiz, LessonProgress
 from .ai_service import generate_quiz_from_text
 from .schemas import (
     UserRegister,
@@ -25,7 +25,9 @@ from .schemas import (
     LessonCreate,
     LessonResponse,
     SaveQuizResultRequest,
-    SavedQuizResponse
+    SavedQuizResponse,
+    UserProfileUpdate,
+    ChangePasswordRequest
 )
 from .auth import hash_password, verify_password, create_access_token
 
@@ -78,6 +80,8 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     new_user = User(
+        first_name=user.first_name,
+        last_name=user.last_name,
         email=user.email,
         password_hash=hash_password(user.password)
     )
@@ -235,16 +239,45 @@ def create_lesson(
     return new_lesson
 
 
-@app.get("/courses/{course_id}/lessons", response_model=list[LessonResponse])
+@app.get("/courses/{course_id}/lessons")
 def get_course_lessons(
     course_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     lessons = db.query(Lesson).filter(
         Lesson.course_id == course_id
     ).order_by(Lesson.order_number).all()
 
-    return lessons
+    result = []
+
+    for index, lesson in enumerate(lessons):
+
+        if index == 0:
+            unlocked = True
+        else:
+            previous_lesson = lessons[index - 1]
+
+            completed = db.query(LessonProgress).filter(
+                LessonProgress.user_id == current_user.id,
+                LessonProgress.lesson_id == previous_lesson.id,
+                LessonProgress.completed == True
+            ).first()
+
+            unlocked = completed is not None
+
+        lesson_data = {
+            "id": lesson.id,
+            "title": lesson.title,
+            "content": lesson.content,
+            "order_number": lesson.order_number,
+            "course_id": lesson.course_id,
+            "unlocked": unlocked
+        }
+
+        result.append(lesson_data)
+
+    return result
 
 @app.post("/quizzes/save", response_model=SavedQuizResponse)
 def save_quiz_result(
@@ -275,3 +308,99 @@ def get_my_quizzes(
     return db.query(GeneratedQuiz).filter(
         GeneratedQuiz.user_id == current_user.id
     ).order_by(GeneratedQuiz.created_at.desc()).all()
+
+@app.get("/auth/me", response_model=UserResponse)
+def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+@app.put("/auth/profile", response_model=UserResponse)
+def update_profile(
+    profile: UserProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if profile.first_name is not None:
+        current_user.first_name = profile.first_name
+
+    if profile.last_name is not None:
+        current_user.last_name = profile.last_name
+
+    if profile.avatar is not None:
+        current_user.avatar = profile.avatar
+
+    if profile.occupation is not None:
+        current_user.occupation = profile.occupation
+
+    if profile.interests is not None:
+        current_user.interests = profile.interests
+
+    db.commit()
+    db.refresh(current_user)
+
+    return current_user
+
+
+@app.put("/auth/change-password")
+def change_password(
+    request: ChangePasswordRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if not verify_password(request.current_password, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+
+    current_user.password_hash = hash_password(request.new_password)
+
+    db.commit()
+
+    return {"message": "Password changed successfully"}
+
+@app.get("/courses/{course_id}", response_model=CourseResponse)
+def get_course(
+    course_id: int,
+    db: Session = Depends(get_db)
+):
+    course = db.query(Course).filter(Course.id == course_id).first()
+
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    return course
+
+@app.get("/lessons/{lesson_id}", response_model=LessonResponse)
+def get_lesson(
+    lesson_id: int,
+    db: Session = Depends(get_db)
+):
+    lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    return lesson
+
+@app.post("/lessons/{lesson_id}/complete")
+def complete_lesson(
+    lesson_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    existing = db.query(LessonProgress).filter(
+        LessonProgress.user_id == current_user.id,
+        LessonProgress.lesson_id == lesson_id
+    ).first()
+
+    if existing:
+        existing.completed = True
+    else:
+        progress = LessonProgress(
+            user_id=current_user.id,
+            lesson_id=lesson_id,
+            completed=True
+        )
+
+        db.add(progress)
+
+    db.commit()
+
+    return {"message": "Lesson completed"}

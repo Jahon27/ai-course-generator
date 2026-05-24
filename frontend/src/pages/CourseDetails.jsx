@@ -6,6 +6,7 @@ export default function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState([]);
+  const [enrolled, setEnrolled] = useState(false);
 
   useEffect(() => {
     fetchCourse();
@@ -26,6 +27,9 @@ export default function CourseDetails() {
       },
     });
     setLessons(response.data);
+    if (response.data.length > 0) {
+      setEnrolled(true);
+    }
   }
 
   async function enrollCourse() {
@@ -47,6 +51,7 @@ export default function CourseDetails() {
     );
 
     alert("Enrolled successfully!");
+    setEnrolled(true);
   }
 
   if (!course) {
@@ -73,7 +78,20 @@ export default function CourseDetails() {
         </p>
 
         <div style={{ display: "flex", gap: "14px", marginTop: "24px" }}>
-          <button onClick={enrollCourse}>Enroll Course</button>
+          {enrolled ? (
+              <button
+                style={{
+                  background: "rgba(34,197,94,0.2)",
+                  border: "1px solid rgba(34,197,94,0.5)"
+                }}
+              >
+                ✓ Enrolled
+              </button>
+            ) : (
+              <button onClick={enrollCourse}>
+                Enroll Course
+              </button>
+            )}
 
           {lessons.length > 0 && (
             <Link to={`/courses/${id}/lessons/${lessons[0].id}`}>
