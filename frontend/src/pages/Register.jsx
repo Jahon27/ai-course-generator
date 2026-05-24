@@ -6,6 +6,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
 
   async function handleRegister(e) {
@@ -17,6 +19,8 @@ export default function Register() {
     }
 
     await api.post("/auth/register", {
+      first_name: firstName,
+      last_name: lastName,
       email,
       password,
     });
@@ -30,6 +34,18 @@ export default function Register() {
     <h1>Create account</h1>
 
       <form onSubmit={handleRegister}>
+       <input
+          placeholder="First name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <br /><br />
+        <input
+          placeholder="Last name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <br /><br />
         <input
           placeholder="Email"
           value={email}

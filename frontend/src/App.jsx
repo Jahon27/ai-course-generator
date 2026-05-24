@@ -5,9 +5,12 @@ import Courses from "./pages/Courses";
 import Dashboard from "./pages/Dashboard";
 import AITools from "./pages/AITools";
 import CourseDetails from "./pages/CourseDetails";
+import LessonDetails from "./pages/LessonDetails";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   return (
     <BrowserRouter>
       <div className="app">
@@ -15,22 +18,42 @@ function App() {
           <Link className="logo" to="/">AI Course Generator</Link>
 
           <div className="nav-links">
-            <Link to="/">Courses</Link>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/ai-tools">AI Tools</Link>
-            <Link to="/login">Login</Link>
-            <Link className="nav-button" to="/register">Get Started</Link>
-          </div>
+              <Link to="/">Courses</Link>
+              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/ai-tools">AI Tools</Link>
+
+              {isLoggedIn ? (
+                <button
+                  className="nav-button"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    setIsLoggedIn(false);
+                    window.location.href = "/";
+                  }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link to="/login">Login</Link>
+
+                  <Link className="nav-button" to="/register">
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
         </nav>
 
         <main className="main">
           <Routes>
             <Route path="/" element={<Courses />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/courses/:id" element={<CourseDetails />} />
+            <Route path="/courses/:id/lessons/:lessonId" element={<LessonDetails />} />
           </Routes>
         </main>
       </div>
