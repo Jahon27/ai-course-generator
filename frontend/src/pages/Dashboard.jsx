@@ -201,37 +201,20 @@ export default function Dashboard() {
 
       {user && (
           <div className="card" style={{ marginBottom: "32px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-              <div
-                style={{
-                  width: "82px",
-                  height: "82px",
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, #6366f1, #a855f7)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "28px",
-                  fontWeight: "800",
-                }}
-              >
+            <div className="profile-card-content">
+              <div className="profile-avatar">
                 {user.avatar ? (
                   <img
                     src={user.avatar}
                     alt="avatar"
-                    style={{
-                      width: "82px",
-                      height: "82px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                    }}
+                    className="profile-avatar-img"
                   />
                 ) : (
                   `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`
                 )}
               </div>
 
-              <div style={{ flex: 1 }}>
+              <div className="profile-info">
                 <h2 style={{ margin: 0 }}>
                   Welcome back, {user.first_name || user.email.split("@")[0]}
                 </h2>
@@ -242,9 +225,12 @@ export default function Dashboard() {
                 </p>
               </div>
 
-              <button onClick={() => setShowEditProfile(!showEditProfile)}>
-                Edit Profile
-              </button>
+              <button
+                  className="edit-profile-btn"
+                  onClick={() => setShowEditProfile(!showEditProfile)}
+                >
+                  Edit Profile
+                </button>
             </div>
           </div>
         )}

@@ -13,6 +13,15 @@ import { Toaster } from "react-hot-toast";
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
     const [menuOpen, setMenuOpen] = useState(false);
+
+    function getInitials() {
+      const firstName = localStorage.getItem("first_name");
+      const lastName = localStorage.getItem("last_name");
+
+      if (!firstName && !lastName) return "AI";
+
+      return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
+    }
   return (
     <BrowserRouter>
       <div className="app">
@@ -27,6 +36,18 @@ function App() {
 
             {menuOpen && (
               <div className="mobile-dropdown">
+                <div className="mobile-user-box">
+                  <div className="mobile-avatar">
+                      {isLoggedIn ? getInitials() : "AI"}
+                    </div>
+                  <div>
+                   <div>
+                      <strong>{isLoggedIn ? "My Account" : "AI Course Generator"}</strong>
+                      <p>{isLoggedIn ? "Learning Dashboard" : "Learning Platform"}</p>
+                    </div>
+                  </div>
+                </div>
+
                 <Link to="/" onClick={() => setMenuOpen(false)}>Courses</Link>
                 <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
                 <Link to="/ai-tools" onClick={() => setMenuOpen(false)}>AI Tools</Link>
@@ -37,6 +58,8 @@ function App() {
                   <button
                     onClick={() => {
                       localStorage.removeItem("token");
+                      localStorage.removeItem("first_name");
+                      localStorage.removeItem("last_name");
                       setIsLoggedIn(false);
                       setMenuOpen(false);
                       window.location.href = "/";
@@ -63,6 +86,8 @@ function App() {
                   className="nav-button"
                   onClick={() => {
                     localStorage.removeItem("token");
+                    localStorage.removeItem("first_name");
+                    localStorage.removeItem("last_name");
                     setIsLoggedIn(false);
                     window.location.href = "/";
                   }}

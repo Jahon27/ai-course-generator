@@ -20,6 +20,15 @@ export default function Login({ setIsLoggedIn }) {
 
     localStorage.setItem("token", response.data.access_token);
 
+    const me = await api.get("/auth/me", {
+      headers: {
+        Authorization: `Bearer ${response.data.access_token}`,
+      },
+    });
+
+    localStorage.setItem("first_name", me.data.first_name || "");
+    localStorage.setItem("last_name", me.data.last_name || "");
+
     setIsLoggedIn(true);
 
     toast.success("Logged in successfully!");
