@@ -144,38 +144,52 @@ export default function CourseDetails() {
                   lesson.unlocked === true ||
                   lesson.unlocked === "true";
 
-              console.log(
-                  "Lesson unlock check:",
-                  lesson.title,
-                  lesson.unlocked,
-                  unlocked
-                );
+                const completed =
+                  lesson.completed === true ||
+                  lesson.completed === "true";
 
               return (
                 <div key={lesson.id} className="card">
                   <span className="badge">Lesson {lesson.order_number}</span>
+                  {completed ? (
+                      <span className="badge">✅ Completed</span>
+                    ) : unlocked ? (
+                      <span className="badge">🔓 Available</span>
+                    ) : (
+                      <span className="badge">🔒 Locked</span>
+                    )}
 
                   <h2>{lesson.title}</h2>
 
-                  {unlocked ? (
-                    <>
-                      <p style={{ color: "rgba(255,255,255,0.65)" }}>
-                        Ready to start this lesson.
-                      </p>
+                  {completed ? (
+                      <>
+                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                          You have completed this lesson. You can review it anytime.
+                        </p>
 
-                      <Link to={`/courses/${id}/lessons/${lesson.id}`}>
-                        <button>Open Lesson</button>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <p style={{ color: "rgba(255,255,255,0.45)" }}>
-                        🔒 Complete previous lesson first
-                      </p>
+                        <Link to={`/courses/${id}/lessons/${lesson.id}`}>
+                          <button>Review Lesson</button>
+                        </Link>
+                      </>
+                    ) : unlocked ? (
+                      <>
+                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                          Ready to start this lesson.
+                        </p>
 
-                      <button disabled>Locked</button>
-                    </>
-                  )}
+                        <Link to={`/courses/${id}/lessons/${lesson.id}`}>
+                          <button>Open Lesson</button>
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <p style={{ color: "rgba(255,255,255,0.45)" }}>
+                          Complete previous lesson first.
+                        </p>
+
+                        <button disabled>Locked</button>
+                      </>
+                    )}
                 </div>
               );
             })
