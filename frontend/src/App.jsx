@@ -27,14 +27,6 @@ function App() {
 
             {menuOpen && (
               <div className="mobile-dropdown">
-                <div className="mobile-user-box">
-                  <div className="mobile-avatar">JT</div>
-                  <div>
-                    <strong>AI Course Generator</strong>
-                    <p>Learning Platform</p>
-                  </div>
-                </div>
-
                 <Link to="/" onClick={() => setMenuOpen(false)}>Courses</Link>
                 <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
                 <Link to="/ai-tools" onClick={() => setMenuOpen(false)}>AI Tools</Link>
