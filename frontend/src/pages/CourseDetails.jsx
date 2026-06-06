@@ -9,6 +9,7 @@ export default function CourseDetails() {
   const [lessons, setLessons] = useState([]);
   const [enrolled, setEnrolled] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchCourse();
@@ -22,15 +23,20 @@ export default function CourseDetails() {
   }
 
   async function fetchLessons() {
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    const response = await api.get(`/courses/${id}/lessons`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setLessons(response.data);
-  }
+      const config = token
+        ? {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        : {};
+
+      const response = await api.get(`/courses/${id}/lessons`, config);
+
+      setLessons(response.data);
+    }
 
   async function enrollCourse() {
     const token = localStorage.getItem("token");
@@ -121,10 +127,24 @@ export default function CourseDetails() {
             )}
 
           {lessons.length > 0 && (
+          token ? (
             <Link to={`/courses/${id}/lessons/${lessons[0].id}`}>
               <button>Start First Lesson</button>
             </Link>
-          )}
+          ) : (
+            <button
+              onClick={() => {
+                toast.error("Please login first");
+
+                setTimeout(() => {
+                  navigate("/login");
+                }, 1500);
+              }}
+            >
+              Login to Start
+            </button>
+          )
+        )}
         </div>
       </div>
 
@@ -160,7 +180,25 @@ export default function CourseDetails() {
 
                   <h2>{lesson.title}</h2>
 
-                  {completed ? (
+                  {!token ? (
+                      <>
+                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                          Login to access this lesson.
+                        </p>
+
+                        <button
+                          onClick={() => {
+                            toast.error("Please login first");
+
+                            setTimeout(() => {
+                              navigate("/login");
+                            }, 1500);
+                          }}
+                        >
+                          Login to Start
+                        </button>
+                      </>
+                    ) : completed ? (
                       <>
                         <p style={{ color: "rgba(255,255,255,0.65)" }}>
                           You have completed this lesson. You can review it anytime.

@@ -271,12 +271,31 @@ def create_lesson(
 
     return new_lesson
 
+def get_optional_user(
+    credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False)),
+    db: Session = Depends(get_db)
+):
+    if credentials is None:
+        return None
+
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(
+            token,
+            os.getenv("SECRET_KEY"),
+            algorithms=[os.getenv("ALGORITHM")]
+        )
+        email = payload.get("sub")
+    except JWTError:
+        return None
+
+    return db.query(User).filter(User.email == email).first()
 
 @app.get("/courses/{course_id}/lessons")
 def get_course_lessons(
     course_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User | None = Depends(get_optional_user)
 ):
     lessons = db.query(Lesson).filter(
         Lesson.course_id == course_id
@@ -285,24 +304,28 @@ def get_course_lessons(
     result = []
 
     for index, lesson in enumerate(lessons):
-        completed_current = db.query(LessonProgress).filter(
-            LessonProgress.user_id == current_user.id,
-            LessonProgress.lesson_id == lesson.id,
-            LessonProgress.completed == True
-        ).first()
-
-        if index == 0:
-            unlocked = True
+        if current_user is None:
+            unlocked = index == 0
+            completed_current = None
         else:
-            previous_lesson = lessons[index - 1]
-
-            completed_previous = db.query(LessonProgress).filter(
+            completed_current = db.query(LessonProgress).filter(
                 LessonProgress.user_id == current_user.id,
-                LessonProgress.lesson_id == previous_lesson.id,
+                LessonProgress.lesson_id == lesson.id,
                 LessonProgress.completed == True
             ).first()
 
-            unlocked = completed_previous is not None
+            if index == 0:
+                unlocked = True
+            else:
+                previous_lesson = lessons[index - 1]
+
+                completed_previous = db.query(LessonProgress).filter(
+                    LessonProgress.user_id == current_user.id,
+                    LessonProgress.lesson_id == previous_lesson.id,
+                    LessonProgress.completed == True
+                ).first()
+
+                unlocked = completed_previous is not None
 
         lesson_data = {
             "id": lesson.id,
