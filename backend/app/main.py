@@ -283,19 +283,24 @@ def get_course_lessons(
     result = []
 
     for index, lesson in enumerate(lessons):
+        completed_current = db.query(LessonProgress).filter(
+            LessonProgress.user_id == current_user.id,
+            LessonProgress.lesson_id == lesson.id,
+            LessonProgress.completed == True
+        ).first()
 
         if index == 0:
             unlocked = True
         else:
             previous_lesson = lessons[index - 1]
 
-            completed = db.query(LessonProgress).filter(
+            completed_previous = db.query(LessonProgress).filter(
                 LessonProgress.user_id == current_user.id,
                 LessonProgress.lesson_id == previous_lesson.id,
                 LessonProgress.completed == True
             ).first()
 
-            unlocked = completed is not None
+            unlocked = completed_previous is not None
 
         lesson_data = {
             "id": lesson.id,
@@ -303,7 +308,8 @@ def get_course_lessons(
             "content": lesson.content,
             "order_number": lesson.order_number,
             "course_id": lesson.course_id,
-            "unlocked": unlocked
+            "unlocked": unlocked,
+            "completed": completed_current is not None
         }
 
         result.append(lesson_data)

@@ -99,6 +99,12 @@ export default function CourseDetails() {
           <strong>Duration:</strong> {course.duration}
         </p>
 
+        {lessons.length > 0 && lessons.every((lesson) => lesson.completed) && (
+          <div className="enrolled-badge" style={{ marginTop: "18px" }}>
+            🎓 Course Completed
+          </div>
+        )}
+
         <div style={{ display: "flex", gap: "14px", marginTop: "24px" }}>
           {enrolled ? (
               <button

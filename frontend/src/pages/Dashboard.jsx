@@ -346,6 +346,11 @@ export default function Dashboard() {
           progress.map((item) => (
             <div key={item.id} className="card">
               <h3>{item.course_title}</h3>
+              {item.progress_percent === 100 && (
+                  <div className="enrolled-badge" style={{ marginBottom: "16px" }}>
+                    🎓 Course Completed
+                  </div>
+                )}
               <p>
                   <strong>Completed lessons:</strong> {item.completed_lessons} / {item.total_lessons}
                 </p>
@@ -354,7 +359,9 @@ export default function Dashboard() {
                 </p>
 
               <Link to={`/courses/${item.course_id}`}>
-                <button>Continue Course</button>
+                <button>
+                  {item.progress_percent === 100 ? "Review Course" : "Continue Course"}
+                </button>
               </Link>
 
               <div className="progress-bar">
