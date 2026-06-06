@@ -80,7 +80,6 @@ export default function CourseDetails() {
     return <div className="card">Loading course...</div>;
   }
 
-  console.log("Lessons:", lessons);
   return (
     <div>
       <div className="card" style={{ marginBottom: "32px" }}>

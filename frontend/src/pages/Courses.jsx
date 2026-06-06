@@ -34,7 +34,6 @@ export default function Courses() {
   async function fetchCourses() {
       try {
         const response = await api.get("/courses");
-        console.log("Courses from backend:", response.data);
         setCourses(response.data);
       } catch (error) {
         console.error("Failed to fetch courses:", error);
