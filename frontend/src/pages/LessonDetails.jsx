@@ -61,8 +61,8 @@ export default function LessonDetails() {
       );
 
       setQuiz(response.data);
-    } catch (error) {
-      alert("Quiz generation failed");
+  } catch (error) {
+      toast.error("Quiz generation failed");
       console.error(error);
     } finally {
       setLoading(false);
@@ -124,14 +124,8 @@ export default function LessonDetails() {
         <span className="badge">Lesson {lesson.order_number}</span>
         <h1>{lesson.title}</h1>
 
-        <div className="lesson-content">
-          <pre style={{
-            whiteSpace: "pre-wrap",
-            fontFamily: "inherit",
-            color: "rgba(255,255,255,0.85)"
-          }}>
-            {lesson.content}
-          </pre>
+       <div className="lesson-content">
+          <ReactMarkdown>{lesson.content}</ReactMarkdown>
         </div>
 
         <button onClick={generateQuiz} disabled={loading}>

@@ -89,16 +89,19 @@ export default function Courses() {
           <p>{course.description}</p>
           <p><strong>Duration:</strong> {course.duration}</p>
 
-            <Link to={`/courses/${course.id}`}>
-              <button>View Lessons</button>
-            </Link>
-          {enrolledCourseIds.includes(course.id) ? (
-          <button className="enrolled-badge">✓ Enrolled</button>
-        ) : (
-          <button onClick={() => enroll(course.id)}>
-            Enroll Course
-          </button>
-        )}
+            <div className="course-actions">
+              <Link to={`/courses/${course.id}`}>
+                <button>View Lessons</button>
+              </Link>
+
+              {enrolledCourseIds.includes(course.id) ? (
+                <button className="enrolled-badge">✓ Enrolled</button>
+              ) : (
+                <button onClick={() => enroll(course.id)}>
+                  Enroll Course
+                </button>
+              )}
+            </div>
         </div>
       ))}
     </div>
