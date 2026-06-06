@@ -122,7 +122,6 @@ export default function LessonDetails() {
 
       <div className="card" style={{ marginBottom: "32px" }}>
         <span className="badge">Lesson {lesson.order_number}</span>
-        <h1>{lesson.title}</h1>
 
        <div className="lesson-content">
           <ReactMarkdown>{lesson.content}</ReactMarkdown>
