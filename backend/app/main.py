@@ -36,8 +36,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="AI Course Generator API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173",
-        "http://localhost:5174"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://20.250.144.167:5173",],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
