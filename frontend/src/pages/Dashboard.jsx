@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/api";
 import toast from "react-hot-toast";
+import jsPDF from "jspdf";
 
 export default function Dashboard() {
   const [progress, setProgress] = useState([]);
@@ -134,6 +135,61 @@ export default function Dashboard() {
       });
 
       toast.success("Password successfully changed!");
+    }
+
+   function downloadCertificate(courseTitle) {
+      const doc = new jsPDF("landscape");
+
+      doc.setDrawColor(194, 168, 120);
+        doc.setLineWidth(2);
+        doc.rect(10, 10, 277, 190);
+
+        doc.setFontSize(32);
+        doc.setTextColor(194, 168, 120);
+        doc.text("CERTIFICATE OF COMPLETION", 148, 40, {
+          align: "center",
+        });
+
+        doc.setFontSize(18);
+        doc.setTextColor(0, 0, 0);
+        doc.text("This certifies that", 148, 70, {
+          align: "center",
+        });
+
+        doc.setFontSize(28);
+        doc.text(
+          `${user?.first_name} ${user?.last_name}`,
+          148,
+          95,
+          { align: "center" }
+        );
+
+        doc.line(80, 105, 220, 105);
+
+        doc.setFontSize(18);
+        doc.text("has successfully completed", 148, 125, {
+          align: "center",
+        });
+
+        doc.setFontSize(24);
+        doc.text(courseTitle, 148, 145, {
+          align: "center",
+        });
+
+        doc.setFontSize(14);
+        doc.text(
+          `Issued on ${new Date().toLocaleDateString()}`,
+          148,
+          170,
+          { align: "center" }
+        );
+
+      doc.setFontSize(14);
+      doc.text(`Issued by AI Course Generator`, 148, 185, {
+        align: "center",
+      });
+
+      doc.save(`${courseTitle}-certificate.pdf`);
     }
 
   return (
@@ -358,11 +414,19 @@ export default function Dashboard() {
                   <strong>Progress:</strong> {item.progress_percent}%
                 </p>
 
-              <Link to={`/courses/${item.course_id}`}>
-                <button>
-                  {item.progress_percent === 100 ? "Review Course" : "Continue Course"}
-                </button>
-              </Link>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  <Link to={`/courses/${item.course_id}`}>
+                    <button>
+                      {item.progress_percent === 100 ? "Review Course" : "Continue Course"}
+                    </button>
+                  </Link>
+
+                  {item.progress_percent === 100 && (
+                    <button onClick={() => downloadCertificate(item.course_title)}>
+                      Download Certificate
+                    </button>
+                  )}
+                </div>
 
               <div className="progress-bar">
                 <div

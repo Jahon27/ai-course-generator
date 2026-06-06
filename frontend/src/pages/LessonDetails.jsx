@@ -11,6 +11,7 @@ export default function LessonDetails() {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [loading, setLoading] = useState(false);
   const [lessons, setLessons] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setQuiz(null);
@@ -151,14 +152,25 @@ export default function LessonDetails() {
                 <h3>🎉 Congratulations!</h3>
                 <p>You passed this lesson quiz.</p>
 
-                <button
-                  onClick={async () => {
-                    await completeLesson();
-                    window.location.href = `/courses/${id}/lessons/${Number(lessonId) + 1}`;
-                  }}
-                >
-                  Unlock & Go to Next Lesson
-                </button>
+                {nextLesson ? (
+                  <button
+                    onClick={async () => {
+                      await completeLesson();
+                      navigate(`/courses/${id}/lessons/${nextLesson.id}`);
+                    }}
+                  >
+                    Unlock & Go to Next Lesson
+                  </button>
+                ) : (
+                  <button
+                    onClick={async () => {
+                      await completeLesson();
+                      navigate(`/courses/${id}`);
+                    }}
+                  >
+                    Finish Course
+                  </button>
+                )}
               </div>
             )}
 

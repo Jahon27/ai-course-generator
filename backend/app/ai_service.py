@@ -14,26 +14,39 @@ client = OpenAI(
 def generate_quiz_from_text(lecture_text: str):
     lecture_text = lecture_text[:6000]
     prompt = f"""
-You are an AI learning assistant.
+    You are an educational quiz generator.
 
-Generate a short learning summary and 5 multiple-choice quiz questions from this lecture.
+    Create exactly 5 multiple-choice questions from the lesson text.
 
-Return ONLY valid JSON in this format:
+    Return ONLY valid JSON in this format:
 
-{{
-  "summary": "short summary here",
-  "questions": [
     {{
-      "question": "question text",
-      "options": ["A", "B", "C", "D"],
-      "answer": "correct answer text"
+      "summary": "short lesson summary",
+      "questions": [
+        {{
+          "question": "Clear question text",
+          "options": [
+            "Full answer option 1",
+            "Full answer option 2",
+            "Full answer option 3",
+            "Full answer option 4"
+          ],
+          "answer": "Full correct answer text"
+        }}
+      ]
     }}
-  ]
-}}
 
-Lecture:
-{lecture_text}
-"""
+    Rules:
+    - Options must be full meaningful answer texts.
+    - Do NOT use only letters like A, B, C, D.
+    - Do NOT include markdown.
+    - Do NOT include explanations.
+    - The answer must exactly match one option.
+    - Make questions practical and based only on the lesson text.
+
+    Lesson text:
+    {lecture_text}
+    """
 
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
