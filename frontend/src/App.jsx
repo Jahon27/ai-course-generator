@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+    const [menuOpen, setMenuOpen] = useState(false);
   return (
     <BrowserRouter>
       <div className="app">
@@ -42,6 +43,23 @@ function App() {
                     Get Started
                   </Link>
                 </>
+              )}
+            </div>
+
+            <div className="mobile-nav">
+              <button
+                className="hamburger"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                ☰
+              </button>
+
+              {menuOpen && (
+                <div className="mobile-menu">
+                  <Link to="/">Courses</Link>
+                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/ai-tools">AI Tools</Link>
+                </div>
               )}
             </div>
         </nav>
