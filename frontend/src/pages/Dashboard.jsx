@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/api";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const [progress, setProgress] = useState([]);
@@ -115,7 +116,7 @@ export default function Dashboard() {
 
       setUser(response.data);
       setShowEditProfile(false);
-      alert("Profile updated!");
+      toast.success("Profile successfully updated!");
     }
 
     async function changePassword() {
@@ -132,7 +133,7 @@ export default function Dashboard() {
         new_password: "",
       });
 
-      alert("Password changed!");
+      toast.success("Password successfully changed!");
     }
 
   return (

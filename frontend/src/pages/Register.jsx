@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -10,24 +11,40 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
 
-  async function handleRegister(e) {
-    e.preventDefault();
+    async function handleRegister(e) {
+      e.preventDefault();
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+      if (password !== confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
+
+      if (password.length < 6) {
+        toast.error("Password must be at least 6 characters");
+        return;
+      }
+
+      try {
+        await api.post("/auth/register", {
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password,
+        });
+
+        toast.success("Account created successfully!");
+
+        navigate("/login");
+      } catch (error) {
+        console.error(error);
+
+        if (error.response?.status === 400) {
+          toast.error("Email already registered");
+        } else {
+          toast.error("Registration failed");
+        }
+      }
     }
-
-    await api.post("/auth/register", {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      password,
-    });
-
-    alert("Account created!");
-    navigate("/login");
-  }
 
   return (
     <div className="form-card">
@@ -38,18 +55,21 @@ export default function Register() {
           placeholder="First name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          required
         />
         <br /><br />
         <input
           placeholder="Last name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          required
         />
         <br /><br />
         <input
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <br /><br />
@@ -59,6 +79,7 @@ export default function Register() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <br /><br />
@@ -68,6 +89,7 @@ export default function Register() {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          required
         />
 
         <br /><br />

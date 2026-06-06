@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
+import toast from "react-hot-toast";
 
 export default function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState([]);
   const [enrolled, setEnrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCourse();
@@ -34,7 +36,12 @@ export default function CourseDetails() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      alert("Please login first");
+      toast.error("Please login first");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
       return;
     }
 
@@ -48,7 +55,7 @@ export default function CourseDetails() {
       }
     );
 
-    alert("Enrolled successfully!");
+    toast.success("Enrolled successfully!");
     setEnrolled(true);
   }
 

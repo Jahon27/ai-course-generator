@@ -8,6 +8,7 @@ import CourseDetails from "./pages/CourseDetails";
 import LessonDetails from "./pages/LessonDetails";
 import { useState } from "react";
 import "./App.css";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
@@ -57,6 +58,33 @@ function App() {
           </Routes>
         </main>
       </div>
+      <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#2b3024",
+              color: "#ecdfcc",
+              border: "1px solid rgba(236,223,204,0.12)",
+              borderRadius: "16px",
+              padding: "16px 20px",
+              fontWeight: "600",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+            },
+            success: {
+              iconTheme: {
+                primary: "#8a9a7b",
+                secondary: "#ffffff",
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: "#dc2626",
+                secondary: "#ffffff",
+              },
+            },
+          }}
+        />
     </BrowserRouter>
   );
 }

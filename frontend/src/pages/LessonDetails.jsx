@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import api from "../api/api";
+import toast from "react-hot-toast";
 
 export default function LessonDetails() {
   const { id, lessonId } = useParams();
@@ -39,7 +40,7 @@ export default function LessonDetails() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      alert("Please login first");
+      toast.error("Please login first");
       return;
     }
 

@@ -1,25 +1,40 @@
 import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export default function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  async function handleLogin(e) {
-    e.preventDefault();
+ async function handleLogin(e) {
+  e.preventDefault();
 
+  try {
     const response = await api.post("/auth/login", {
       email,
       password,
     });
 
     localStorage.setItem("token", response.data.access_token);
+
     setIsLoggedIn(true);
-    alert("Logged in!");
+
+    toast.success("Logged in successfully!");
+
     navigate("/dashboard");
+  } catch (error) {
+    console.error(error);
+
+    if (error.response?.status === 401) {
+      toast.error("Invalid email or password");
+    } else {
+      toast.error("Something went wrong. Please try again.");
+    }
   }
+}
 
   return (
     <div className="form-card">
@@ -30,6 +45,7 @@ export default function Login({ setIsLoggedIn }) {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <br /><br />
@@ -39,11 +55,30 @@ export default function Login({ setIsLoggedIn }) {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <br /><br />
 
         <button type="submit">Login</button>
+        <div
+          style={{
+            marginTop: "24px",
+            textAlign: "center",
+            color: "rgba(236,223,204,0.7)",
+          }}
+        >
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            style={{
+              color: "#8a9a7b",
+              fontWeight: "700",
+            }}
+          >
+            Sign up
+          </Link>
+        </div>
       </form>
     </div>
   );

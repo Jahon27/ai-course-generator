@@ -1,5 +1,7 @@
 import { useState } from "react";
 import api from "../api/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AITools() {
   const [lectureText, setLectureText] = useState("");
@@ -7,12 +9,18 @@ export default function AITools() {
   const [loading, setLoading] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const navigate = useNavigate();
 
   async function generateQuiz() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      alert("Please login first");
+      toast.error("Please login first");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
       return;
     }
 
@@ -33,7 +41,7 @@ export default function AITools() {
       setResult(response.data);
       setSelectedAnswers({});
     } catch (error) {
-      alert("AI generation failed");
+      toast.error("AI generation failed");
       console.error(error);
     } finally {
       setLoading(false);
@@ -44,12 +52,17 @@ export default function AITools() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("Please login first");
+        toast.error("Please login first");
+
+        setTimeout(() => {
+            navigate("/login");
+          }, 1500);
+
         return;
       }
 
       if (!pdfFile) {
-        alert("Please choose a PDF file");
+        toast.error("Please choose a PDF file");
         return;
       }
 
@@ -73,7 +86,7 @@ export default function AITools() {
 
         setResult(response.data);
       } catch (error) {
-        alert("PDF generation failed");
+        toast.error("PDF generation failed");
         console.error(error);
       } finally {
         setLoading(false);
@@ -116,9 +129,9 @@ export default function AITools() {
           }
         );
 
-        alert("Quiz result saved!");
+        toast.success("Quiz result saved!");
       } catch (error) {
-        alert("Failed to save quiz result");
+        toast.error("Failed to save quiz result");
         console.error(error);
       }
     }
