@@ -293,39 +293,108 @@ textarea::placeholder {
   flex-wrap: wrap;
 }
 
-.mobile-nav {
+.mobile-menu-button,
+.mobile-dropdown {
   display: none;
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+  }
+
+  .logo {
+    font-size: 28px;
+    text-align: left;
+  }
 
   .nav-links {
-    display: none;
+    display: none !important;
   }
 
-  .nav-button {
-    display: none;
+  .mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    font-size: 24px;
+    padding: 0;
   }
 
-  .mobile-nav {
-    display: block;
+  .mobile-dropdown {
+    display: flex;
+    position: absolute;
+    top: 82px;
+    right: 18px;
+    width: 310px;
+    flex-direction: column;
+    background: #f8f7f2;
+    color: #1f241a;
+    border-radius: 18px;
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
   }
-}
 
-@media (max-width: 768px) {
-
-  .card h2 {
-    font-size: 34px;
-    line-height: 1.1;
-    word-break: break-word;
-  }
-
-  .card p {
+  .mobile-dropdown a,
+  .mobile-dropdown button {
+    background: transparent;
+    color: #1f241a;
+    box-shadow: none;
+    text-align: left;
+    border-radius: 0;
+    padding: 16px 22px;
     font-size: 16px;
   }
 
-  .page-title {
-    font-size: 38px;
+  .mobile-dropdown hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(31,36,26,0.12);
+    margin: 0;
   }
 
+  .mobile-user-box {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(31,36,26,0.12);
+  }
+
+  .mobile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #1f241a;
+    color: #f8f7f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .mobile-user-box p {
+    margin: 4px 0 0;
+    color: rgba(31,36,26,0.65);
+  }
+
+  .card h1,
+  .card h2 {
+    font-size: 34px !important;
+    line-height: 1.15 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .card p {
+    font-size: 16px !important;
+    line-height: 1.6;
+  }
 }

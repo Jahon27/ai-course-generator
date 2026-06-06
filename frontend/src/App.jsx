@@ -18,6 +18,48 @@ function App() {
       <div className="app">
         <nav className="navbar">
           <Link className="logo" to="/">AI Course Generator</Link>
+          <button
+              className="mobile-menu-button"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              ☰
+            </button>
+
+            {menuOpen && (
+              <div className="mobile-dropdown">
+                <div className="mobile-user-box">
+                  <div className="mobile-avatar">JT</div>
+                  <div>
+                    <strong>AI Course Generator</strong>
+                    <p>Learning Platform</p>
+                  </div>
+                </div>
+
+                <Link to="/" onClick={() => setMenuOpen(false)}>Courses</Link>
+                <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+                <Link to="/ai-tools" onClick={() => setMenuOpen(false)}>AI Tools</Link>
+
+                <hr />
+
+                {isLoggedIn ? (
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setIsLoggedIn(false);
+                      setMenuOpen(false);
+                      window.location.href = "/";
+                    }}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+                    <Link to="/register" onClick={() => setMenuOpen(false)}>Get Started</Link>
+                  </>
+                )}
+              </div>
+            )}
 
           <div className="nav-links">
               <Link to="/">Courses</Link>
@@ -46,22 +88,7 @@ function App() {
               )}
             </div>
 
-            <div className="mobile-nav">
-              <button
-                className="hamburger"
-                onClick={() => setMenuOpen(!menuOpen)}
-              >
-                ☰
-              </button>
 
-              {menuOpen && (
-                <div className="mobile-menu">
-                  <Link to="/">Courses</Link>
-                  <Link to="/dashboard">Dashboard</Link>
-                  <Link to="/ai-tools">AI Tools</Link>
-                </div>
-              )}
-            </div>
         </nav>
 
         <main className="main">
