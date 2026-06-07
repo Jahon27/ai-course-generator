@@ -7,13 +7,15 @@ import AITools from "./pages/AITools";
 import CourseDetails from "./pages/CourseDetails";
 import LessonDetails from "./pages/LessonDetails";
 import Home from "./pages/Home";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "./api/api";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
     const [menuOpen, setMenuOpen] = useState(false);
+    const [user, setUser] = useState(null);
 
     function getInitials() {
       const firstName = localStorage.getItem("first_name");
@@ -22,6 +24,32 @@ function App() {
       if (!firstName && !lastName) return "AI";
 
       return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
+    }
+
+  useEffect(() => {
+      fetchUser();
+    }, [isLoggedIn]);
+
+    async function fetchUser() {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setUser(null);
+        return;
+      }
+
+      try {
+        const response = await api.get("/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+        setUser(null);
+      }
     }
   return (
     <BrowserRouter>
@@ -45,18 +73,18 @@ function App() {
               <div className="mobile-dropdown">
                 <div className="mobile-user-box">
                   <div className="mobile-avatar">
-                      {user?.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt="avatar"
-                          className="mobile-avatar-img"
-                        />
-                      ) : (
-                        `${user?.first_name?.[0] || ""}${user?.last_name?.[0] || ""}`
-                      )) : (
-                        "AI"
-                      )}
-                    </div>
+                  {user?.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt="avatar"
+                      className="mobile-avatar-img"
+                    />
+                  ) : isLoggedIn ? (
+                    `${user?.first_name?.[0] || ""}${user?.last_name?.[0] || ""}`
+                  ) : (
+                    "AI"
+                  )}
+                </div>
                   <div>
                    <div>
                       <strong>{isLoggedIn ? "My Account" : "AIDA"}</strong>
