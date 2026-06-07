@@ -484,12 +484,12 @@ textarea::placeholder {
   }
 
   .page-title {
-    font-size: 42px !important;
+    font-size: 34px !important;
     line-height: 1.1 !important;
   }
 
   .page-subtitle {
-    font-size: 18px !important;
+    font-size:  16px !important;
     line-height: 1.4;
   }
 }
@@ -537,20 +537,25 @@ textarea::placeholder {
   }
 
   .home-page .hero-title {
-    font-size: 30px !important;
-    line-height: 1.12 !important;
-    margin-bottom: 8px;
-  }
+      font-size: 38px !important;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
 
-  .home-page .hero-subtitle {
-    font-size: 15px !important;
-    line-height: 1.35;
-    margin-bottom: 12px;
-  }
+    .home-page .hero-subtitle {
+      font-size: 18px !important;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
 
-  .home-page .hero-description {
-    font-size: 15px !important;
-    line-height: 1.55;
-    margin-bottom: 24px;
-  }
+    .home-page .hero-description {
+      font-size: 16px !important;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .home-page .card h2 {
+      font-size: 26px !important;
+      line-height: 1.2;
+    }
 }
