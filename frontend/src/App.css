@@ -717,3 +717,7 @@ select {
   -webkit-appearance: none;
   color-scheme: light;
 }
+
+.back-button {
+  margin-bottom: 24px;
+}
