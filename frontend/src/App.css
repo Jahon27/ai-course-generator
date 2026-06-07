@@ -3,27 +3,30 @@
 }
 
 :root {
-  --bg: #181c14;
-  --surface: rgba(236, 223, 204, 0.06);
-  --surface-strong: rgba(236, 223, 204, 0.09);
-  --border: rgba(236, 223, 204, 0.12);
+  --bg: #2a0f14;
+  --surface: rgba(255, 248, 240, 0.08);
+  --surface-strong: rgba(255, 248, 240, 0.13);
+  --border: rgba(255, 248, 240, 0.16);
 
-  --text: #ecdfcc;
-  --muted: rgba(236, 223, 204, 0.68);
+  --text: #fff3e6;
+  --muted: rgba(255, 243, 230, 0.72);
 
-  --olive: #697565;
-  --olive-light: #8a9a7b;
-  --cream: #f8f7f2;
-  --sand: #c2a878;
+  --burgundy: #7b1e2b;
+  --burgundy-light: #a63a4a;
+  --cream: #fff8f0;
+  --sand: #e6c9a8;
+
+  --olive: #7b1e2b;
+  --olive-light: #a63a4a;
 }
 
 body {
   margin: 0;
   font-family: Inter, sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(105, 117, 101, 0.35), transparent 34%),
-    radial-gradient(circle at top right, rgba(194, 168, 120, 0.16), transparent 30%),
-    var(--bg);
+    radial-gradient(circle at top left, rgba(166, 58, 74, 0.32), transparent 34%),
+    radial-gradient(circle at top right, rgba(230, 201, 168, 0.16), transparent 30%),
+    linear-gradient(180deg, #2a0f14 0%, #16090c 100%);
   color: var(--text);
 }
 
@@ -150,7 +153,7 @@ button:disabled {
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(138, 154, 123, 0.5);
+  border-color: rgba(166, 58, 74, 0.55);
 }
 
 .card h2,
@@ -168,9 +171,9 @@ button:disabled {
   display: inline-flex;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(105, 117, 101, 0.22);
-  border: 1px solid rgba(138, 154, 123, 0.35);
-  color: #dfe8d2;
+  background: rgba(123, 30, 43, 0.28);
+  border: 1px solid rgba(166, 58, 74, 0.45);
+  color: #ffe5d0;
   font-size: 14px;
   font-weight: 800;
   margin-right: 8px;
@@ -203,8 +206,8 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: var(--olive-light);
-  box-shadow: 0 0 0 4px rgba(138, 154, 123, 0.14);
+  border-color: var(--burgundy-light);
+  box-shadow: 0 0 0 4px rgba(166, 58, 74, 0.18);
 }
 
 input::placeholder,
@@ -222,7 +225,7 @@ textarea::placeholder {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--olive-light), var(--sand));
+  background: linear-gradient(90deg, var(--burgundy-light), var(--sand));
   border-radius: inherit;
 }
 
@@ -232,9 +235,9 @@ textarea::placeholder {
   justify-content: center;
   padding: 12px 18px;
   border-radius: 999px;
-  background: rgba(105, 117, 101, 0.24);
-  border: 1px solid rgba(138, 154, 123, 0.45);
-  color: #dfe8d2;
+  background: rgba(123, 30, 43, 0.28);
+  border: 1px solid rgba(166, 58, 74, 0.45);
+  color: #ffe5d0;
   font-weight: 800;
   width: fit-content;
 }
@@ -369,18 +372,18 @@ textarea::placeholder {
     border-bottom: 1px solid rgba(31,36,26,0.12);
   }
 
-  .mobile-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #1f241a;
-    color: #f8f7f2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 20px;
-  }
+.mobile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 20px;
+}
 
   .mobile-user-box p {
     margin: 4px 0 0;
