@@ -432,12 +432,24 @@ def get_course(
 @app.get("/lessons/{lesson_id}", response_model=LessonResponse)
 def get_lesson(
     lesson_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
 
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+
+    enrollment = db.query(UserCourseProgress).filter(
+        UserCourseProgress.user_id == current_user.id,
+        UserCourseProgress.course_id == lesson.course_id
+    ).first()
+
+    if not enrollment:
+        raise HTTPException(
+            status_code=403,
+            detail="You must enroll in this course first"
+        )
 
     return lesson
 

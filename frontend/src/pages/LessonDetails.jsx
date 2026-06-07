@@ -133,97 +133,97 @@ export default function LessonDetails() {
       </div>
 
       {quiz && (
-        <div>
-          <div className="card" style={{ marginBottom: "24px" }}>
-            <h2>Quiz Score</h2>
-            <p>
-              {score} / {quiz.questions.length} correct
-            </p>
+          <div>
+            <div className="card-grid">
+              {quiz.questions.map((q, index) => (
+                <div key={index} className="card">
+                  <h3>Question {index + 1}</h3>
+                  <p>{q.question}</p>
 
-            {quizCompleted && score >= 4 && (
-              <div>
-                <h3>🎉 Congratulations!</h3>
-                <p>You passed this lesson quiz.</p>
+                  <div style={{ display: "grid", gap: "10px" }}>
+                    {q.options.map((option, i) => {
+                      const selected = selectedAnswers[index];
+                      const answered = selected !== undefined;
+                      const isCorrect = option === q.answer;
+                      const isSelected = selected === option;
 
-                {nextLesson ? (
-                  <button
-                    onClick={async () => {
-                      await completeLesson();
-                      navigate(`/courses/${id}/lessons/${nextLesson.id}`);
-                    }}
-                  >
-                    Unlock & Go to Next Lesson
-                  </button>
+                      let background = "rgba(255,255,255,0.04)";
+                      let border = "1px solid rgba(255,255,255,0.08)";
+
+                      if (answered && isCorrect) {
+                        background = "rgba(34,197,94,0.18)";
+                        border = "1px solid rgba(34,197,94,0.55)";
+                      }
+
+                      if (answered && isSelected && !isCorrect) {
+                        background = "rgba(239,68,68,0.18)";
+                        border = "1px solid rgba(239,68,68,0.55)";
+                      }
+
+                      return (
+                        <button
+                          key={i}
+                          disabled={answered}
+                          onClick={() => selectAnswer(index, option)}
+                          style={{
+                            textAlign: "left",
+                            background,
+                            border,
+                            color: "white",
+                          }}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {quizCompleted && (
+              <div className="card" style={{ marginTop: "24px" }}>
+                <h2>Quiz Score</h2>
+                <p>
+                  {score} / {quiz.questions.length} correct
+                </p>
+
+                {score >= 4 ? (
+                  <div>
+                    <h3>🎉 Congratulations!</h3>
+                    <p>You passed this lesson quiz.</p>
+
+                    {nextLesson ? (
+                      <button
+                        onClick={async () => {
+                          await completeLesson();
+                          navigate(`/courses/${id}/lessons/${nextLesson.id}`);
+                        }}
+                      >
+                        Unlock & Go to Next Lesson
+                      </button>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          await completeLesson();
+                          navigate(`/courses/${id}`);
+                        }}
+                      >
+                        Finish Course
+                      </button>
+                    )}
+                  </div>
                 ) : (
-                  <button
-                    onClick={async () => {
-                      await completeLesson();
-                      navigate(`/courses/${id}`);
-                    }}
-                  >
-                    Finish Course
-                  </button>
+                  <div>
+                    <h3>Try again</h3>
+                    <p>You need at least 4/5 to pass.</p>
+                    <button onClick={generateQuiz}>Retake Quiz</button>
+                  </div>
                 )}
               </div>
             )}
-
-            {quizCompleted && score < 4 && (
-              <div>
-                <h3>Try again</h3>
-                <p>You need at least 4/5 to pass.</p>
-                <button onClick={generateQuiz}>Retake Quiz</button>
-              </div>
-            )}
           </div>
-
-          <div className="card-grid">
-            {quiz.questions.map((q, index) => (
-              <div key={index} className="card">
-                <h3>Question {index + 1}</h3>
-                <p>{q.question}</p>
-
-                <div style={{ display: "grid", gap: "10px" }}>
-                  {q.options.map((option, i) => {
-                    const selected = selectedAnswers[index];
-                    const answered = selected !== undefined;
-                    const isCorrect = option === q.answer;
-                    const isSelected = selected === option;
-
-                    let background = "rgba(255,255,255,0.04)";
-                    let border = "1px solid rgba(255,255,255,0.08)";
-
-                    if (answered && isCorrect) {
-                      background = "rgba(34,197,94,0.18)";
-                      border = "1px solid rgba(34,197,94,0.55)";
-                    }
-
-                    if (answered && isSelected && !isCorrect) {
-                      background = "rgba(239,68,68,0.18)";
-                      border = "1px solid rgba(239,68,68,0.55)";
-                    }
-
-                    return (
-                      <button
-                        key={i}
-                        disabled={answered}
-                        onClick={() => selectAnswer(index, option)}
-                        style={{
-                          textAlign: "left",
-                          background,
-                          border,
-                          color: "white",
-                        }}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
