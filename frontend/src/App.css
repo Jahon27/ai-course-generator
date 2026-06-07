@@ -361,7 +361,7 @@ textarea::placeholder {
     color: #1f241a;
     border-radius: 18px;
     overflow: hidden;
-    z-index: 100;
+    z-index: 101;
     box-shadow: 0 20px 60px rgba(0,0,0,0.35);
   }
 
@@ -720,4 +720,17 @@ select {
 
 .back-button {
   margin-bottom: 24px;
+}
+
+.mobile-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
 }

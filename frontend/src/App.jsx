@@ -36,10 +36,26 @@ function App() {
             </button>
 
             {menuOpen && (
+              <div
+                className="menu-overlay"
+                onClick={() => setMenuOpen(false)}
+              />
+            )}
+            {menuOpen && (
               <div className="mobile-dropdown">
                 <div className="mobile-user-box">
                   <div className="mobile-avatar">
-                      {isLoggedIn ? getInitials() : "AI"}
+                      {user?.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt="avatar"
+                          className="mobile-avatar-img"
+                        />
+                      ) : (
+                        `${user?.first_name?.[0] || ""}${user?.last_name?.[0] || ""}`
+                      )) : (
+                        "AI"
+                      )}
                     </div>
                   <div>
                    <div>
