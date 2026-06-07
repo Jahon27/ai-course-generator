@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import AITools from "./pages/AITools";
 import CourseDetails from "./pages/CourseDetails";
 import LessonDetails from "./pages/LessonDetails";
+import Home from "./pages/Home";
 import { useState } from "react";
 import "./App.css";
 import { Toaster } from "react-hot-toast";
@@ -48,7 +49,7 @@ function App() {
                   </div>
                 </div>
 
-                <Link to="/" onClick={() => setMenuOpen(false)}>Courses</Link>
+                <Link to="/courses" onClick={() => setMenuOpen(false)}>Courses</Link>
                 <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
                 <Link to="/ai-tools" onClick={() => setMenuOpen(false)}>AI Tools</Link>
 
@@ -77,7 +78,7 @@ function App() {
             )}
 
           <div className="nav-links">
-              <Link to="/">Courses</Link>
+              <Link to="/courses">Courses</Link>
               <Link to="/dashboard">Dashboard</Link>
               <Link to="/ai-tools">AI Tools</Link>
 
@@ -110,13 +111,14 @@ function App() {
 
         <main className="main">
           <Routes>
-            <Route path="/" element={<Courses />} />
+            <Route path="/courses" element={<Courses />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/courses/:id" element={<CourseDetails />} />
             <Route path="/courses/:id/lessons/:lessonId" element={<LessonDetails />} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </main>
       </div>
