@@ -22,9 +22,33 @@ export default function LessonDetails() {
 
 
   async function fetchLesson() {
-      const response = await api.get(`/lessons/${lessonId}`);
-      setLesson(response.data);
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await api.get(`/lessons/${lessonId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setLesson(response.data);
+      } catch (error) {
+        if (error.response?.status === 403) {
+          toast.error("Please enroll in this course first");
+
+          setTimeout(() => {
+            navigate(`/courses/${id}`);
+          }, 1500);
+        } else if (error.response?.status === 401) {
+          toast.error("Please login first");
+
+          setTimeout(() => {
+            navigate("/login");
+          }, 1500);
+        }
+      }
     }
+
   async function fetchLessons() {
       const token = localStorage.getItem("token");
 
