@@ -181,15 +181,6 @@ export default function AITools() {
             <h2>Summary</h2>
             <p>{result.summary}</p>
           </div>
-            <div className="card" style={{ marginBottom: "24px" }}>
-              <h2>Quiz Score</h2>
-              <p>
-                {getScore()} / {result.questions.length} correct
-              </p>
-              <button onClick={saveQuizResult}>
-                  Save Quiz Result
-                </button>
-            </div>
           <div className="card-grid">
             {result.questions.map((q, index) => (
               <div key={index} className="card">
@@ -239,6 +230,15 @@ export default function AITools() {
               </div>
             ))}
           </div>
+          <div className="card" style={{ marginTop: "24px" }}>
+              <h2>Quiz Score</h2>
+              <p>
+                {getScore()} / {result.questions.length} correct
+              </p>
+              <button onClick={saveQuizResult}>
+                Save Quiz Result
+              </button>
+            </div>
         </div>
       )}
     </div>
