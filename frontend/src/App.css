@@ -86,13 +86,8 @@ a {
 .nav-button,
 button {
   border: none;
-  background: linear-gradient(
-    135deg,
-    #7b1e2b,
-    #a63a4a
-  );
-
-  color: var(--text);
+  background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
+  color: white;
   padding: 14px 22px;
   border-radius: 14px;
   font-weight: 800;
@@ -190,7 +185,7 @@ button:disabled {
   border-radius: 999px;
   background: rgba(123, 30, 43, 0.28);
   border: 1px solid rgba(166, 58, 74, 0.45);
-  color: #ffe5d0;
+  color: var(--text);
   font-size: 14px;
   font-weight: 800;
   margin-right: 8px;
@@ -254,7 +249,7 @@ textarea::placeholder {
   border-radius: 999px;
   background: rgba(123, 30, 43, 0.28);
   border: 1px solid rgba(166, 58, 74, 0.45);
-  color: #ffe5d0;
+  color: var(--text);
   font-weight: 800;
   width: fit-content;
 }
@@ -266,7 +261,7 @@ textarea::placeholder {
 .lesson-content h1,
 .lesson-content h2,
 .lesson-content h3 {
-  color: var(--muted);
+  color: var(--text);
 }
 
 .lesson-content pre {
@@ -653,4 +648,57 @@ textarea::placeholder {
   background: rgba(255,255,255,0.85);
   color: var(--text);
   border: 1px solid var(--border);
+}
+
+.course-detail-title {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: var(--burgundy);
+  line-height: 1.1;
+}
+
+.course-detail-description {
+  font-size: 20px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.muted-text {
+  color: var(--muted);
+}
+
+.enrolled-button {
+  background: rgba(123,30,43,0.06);
+  border: 1px solid var(--burgundy);
+  color: var(--burgundy);
+  box-shadow: none;
+}
+
+.enrolled-button:hover {
+  background: rgba(123,30,43,0.1);
+}
+
+@media (max-width: 768px) {
+  .course-detail-title {
+    font-size: 34px;
+  }
+
+  .course-detail-description {
+    font-size: 16px;
+  }
+}
+
+.auth-switch {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.auth-switch a {
+  color: var(--burgundy);
+  font-weight: 800;
+}
+
+.auth-switch a:hover {
+  color: var(--burgundy-light);
 }

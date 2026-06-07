@@ -70,21 +70,9 @@ export default function Login({ setIsLoggedIn }) {
         <br /><br />
 
         <button type="submit">Login</button>
-        <div
-          style={{
-            marginTop: "24px",
-            textAlign: "center",
-            color: "rgba(236,223,204,0.7)",
-          }}
-        >
+        <div className="auth-switch">
           Don't have an account?{" "}
-          <Link
-            to="/register"
-            style={{
-              color: "#8a9a7b",
-              fontWeight: "700",
-            }}
-          >
+          <Link to="/register">
             Sign up
           </Link>
         </div>

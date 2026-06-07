@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export default function Register() {
@@ -95,6 +95,12 @@ export default function Register() {
         <br /><br />
 
         <button type="submit">Register</button>
+        <div className="auth-switch">
+          Already have an account?{" "}
+          <Link to="/login">
+            Log in
+          </Link>
+        </div>
       </form>
     </div>
   );

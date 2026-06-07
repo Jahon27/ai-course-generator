@@ -92,11 +92,11 @@ export default function CourseDetails() {
         <span className="badge">{course.category}</span>
         <span className="badge">{course.level}</span>
 
-        <h1 style={{ fontSize: "48px", marginBottom: "16px" }}>
+        <h1 className="course-detail-title">
           {course.title}
         </h1>
 
-        <p style={{ fontSize: "20px", color: "rgba(255,255,255,0.72)" }}>
+        <p className="course-detail-description">
           {course.description}
         </p>
 
@@ -110,16 +110,11 @@ export default function CourseDetails() {
           </div>
         )}
 
-        <div style={{ display: "flex", gap: "14px", marginTop: "24px" }}>
+        <div className="course-actions">
           {enrolled ? (
-              <button
-                style={{
-                  background: "rgba(34,197,94,0.2)",
-                  border: "1px solid rgba(34,197,94,0.5)"
-                }}
-              >
-                ✓ Enrolled
-              </button>
+              <button className="enrolled-button">
+                  ✓ Enrolled
+                </button>
             ) : (
               <button onClick={enrollCourse}>
                 Enroll Course
@@ -182,7 +177,7 @@ export default function CourseDetails() {
 
                   {!token ? (
                       <>
-                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                        <p className="muted-text">
                           Login to access this lesson.
                         </p>
 
@@ -200,7 +195,7 @@ export default function CourseDetails() {
                       </>
                     ) : completed ? (
                       <>
-                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                        <p className="muted-text">
                           You have completed this lesson. You can review it anytime.
                         </p>
 
@@ -210,7 +205,7 @@ export default function CourseDetails() {
                       </>
                     ) : unlocked ? (
                       <>
-                        <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                       <p className="muted-text">
                           Ready to start this lesson.
                         </p>
 
@@ -220,7 +215,7 @@ export default function CourseDetails() {
                       </>
                     ) : (
                       <>
-                        <p style={{ color: "rgba(255,255,255,0.45)" }}>
+                        <p className="muted-text">
                           Complete previous lesson first.
                         </p>
 
