@@ -145,30 +145,21 @@ export default function AITools() {
 
       <div className="card">
         <textarea
+          className="ai-textarea"
           placeholder="Paste lecture text here..."
           value={lectureText}
           onChange={(e) => setLectureText(e.target.value)}
-          style={{
-            width: "100%",
-            minHeight: "220px",
-            borderRadius: "18px",
-            padding: "18px",
-            background: "rgba(255,255,255,0.04)",
-            color: "white",
-            border: "1px solid rgba(255,255,255,0.08)",
-            fontSize: "16px",
-          }}
         />
 
         <button onClick={generateQuiz} disabled={loading || !lectureText}>
           {loading ? "Generating..." : "Generate Quiz"}
         </button>
 
-        <hr style={{ margin: "32px 0", borderColor: "rgba(255,255,255,0.08)" }} />
+       <hr className="section-divider" />
 
         <div>
           <h2>Upload PDF Lecture</h2>
-          <p style={{ color: "rgba(255,255,255,0.65)" }}>
+          <p className="muted-text">
             Upload a PDF lecture and generate a summary with quiz questions.
           </p>
 
@@ -215,34 +206,25 @@ export default function AITools() {
                     const isCorrect = option === q.answer;
                     const answered = selected !== undefined;
 
-                    let background = "rgba(255,255,255,0.04)";
-                    let border = "1px solid rgba(255,255,255,0.08)";
+                    let optionClass = "quiz-option";
 
                     if (answered && isCorrect) {
-                      background = "rgba(34,197,94,0.18)";
-                      border = "1px solid rgba(34,197,94,0.55)";
+                      optionClass = "quiz-option correct";
                     }
 
                     if (answered && isSelected && !isCorrect) {
-                      background = "rgba(239,68,68,0.18)";
-                      border = "1px solid rgba(239,68,68,0.55)";
+                      optionClass = "quiz-option wrong";
                     }
 
                     return (
                       <button
-                        key={i}
-                        onClick={() => selectAnswer(index, option)}
-                        disabled={answered}
-                        style={{
-                          textAlign: "left",
-                          background,
-                          border,
-                          color: "white",
-                          width: "100%",
-                        }}
-                      >
-                        {option}
-                      </button>
+                      key={i}
+                      onClick={() => selectAnswer(index, option)}
+                      disabled={answered}
+                      className={optionClass}
+                    >
+                      {option}
+                    </button>
                     );
                   })}
                 </div>
