@@ -118,8 +118,20 @@ button:disabled {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1200px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card,
@@ -271,5 +283,213 @@ textarea::placeholder {
 
   .page-subtitle {
     font-size: 18px;
+  }
+}
+
+.course-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.mobile-menu-button,
+.mobile-dropdown {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+  }
+
+  .logo {
+    font-size: 28px;
+    text-align: left;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    font-size: 24px;
+    padding: 0;
+  }
+
+  .mobile-dropdown {
+    display: flex;
+    position: absolute;
+    top: 82px;
+    right: 18px;
+    width: 310px;
+    flex-direction: column;
+    background: #f8f7f2;
+    color: #1f241a;
+    border-radius: 18px;
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+
+  .mobile-dropdown a,
+  .mobile-dropdown button {
+    background: transparent;
+    color: #1f241a;
+    box-shadow: none;
+    text-align: left;
+    border-radius: 0;
+    padding: 16px 22px;
+    font-size: 16px;
+  }
+
+  .mobile-dropdown hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(31,36,26,0.12);
+    margin: 0;
+  }
+
+  .mobile-user-box {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(31,36,26,0.12);
+  }
+
+  .mobile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #1f241a;
+    color: #f8f7f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .mobile-user-box p {
+    margin: 4px 0 0;
+    color: rgba(31,36,26,0.65);
+  }
+
+  .card h1,
+  .card h2 {
+    font-size: 34px !important;
+    line-height: 1.15 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .card p {
+    font-size: 16px !important;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 42px !important;
+    line-height: 1.1;
+  }
+
+  .page-subtitle {
+    font-size: 18px !important;
+  }
+}
+
+.profile-card-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.profile-avatar {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--olive), var(--olive-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.profile-avatar-img {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.edit-profile-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .profile-card-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .profile-avatar,
+  .profile-avatar-img {
+    width: 118px;
+    height: 118px;
+  }
+
+  .profile-info h2 {
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    margin: 8px 0 0 !important;
+  }
+
+  .profile-info p {
+    font-size: 17px !important;
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+
+  .edit-profile-btn {
+    width: 100%;
+    max-width: 280px;
+    white-space: nowrap;
+    font-size: 18px;
+    margin-top: 6px;
+  }
+
+  .page-title {
+    font-size: 42px !important;
+    line-height: 1.1 !important;
+  }
+
+  .page-subtitle {
+    font-size: 18px !important;
+    line-height: 1.4;
   }
 }
