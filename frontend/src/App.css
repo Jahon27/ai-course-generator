@@ -3,18 +3,20 @@
 }
 
 :root {
-  --bg: #2a0f14;
-  --surface: rgba(255, 248, 240, 0.08);
-  --surface-strong: rgba(255, 248, 240, 0.13);
-  --border: rgba(255, 248, 240, 0.16);
+  --bg: #faf5ef;
 
-  --text: #fff3e6;
-  --muted: rgba(255, 243, 230, 0.72);
+  --surface: rgba(255,255,255,0.8);
+  --surface-strong: rgba(255,255,255,0.95);
+  --border: rgba(123,30,43,0.12);
+
+  --text: #4a1d24;
+  --muted: rgba(74,29,36,0.68);
 
   --burgundy: #7b1e2b;
   --burgundy-light: #a63a4a;
-  --cream: #fff8f0;
-  --sand: #e6c9a8;
+
+  --cream: #fffdf9;
+  --sand: #d9b48f;
 
   --olive: #7b1e2b;
   --olive-light: #a63a4a;
@@ -23,10 +25,20 @@
 body {
   margin: 0;
   font-family: Inter, sans-serif;
+
   background:
-    radial-gradient(circle at top left, rgba(166, 58, 74, 0.32), transparent 34%),
-    radial-gradient(circle at top right, rgba(230, 201, 168, 0.16), transparent 30%),
-    linear-gradient(180deg, #2a0f14 0%, #16090c 100%);
+    radial-gradient(
+      circle at top left,
+      rgba(166,58,74,0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(217,180,143,0.15),
+      transparent 35%
+    ),
+    #faf5ef;
+
   color: var(--text);
 }
 
@@ -44,8 +56,8 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 22px 48px;
-  background: rgba(24, 28, 20, 0.72);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255,253,249,0.85);
+  border-bottom: 1px solid rgba(123,30,43,0.08);
   backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
@@ -55,7 +67,7 @@ a {
 .logo {
   font-size: 30px;
   font-weight: 900;
-  color: var(--cream);
+  color: var(--burgundy);
   letter-spacing: -0.04em;
 }
 
@@ -68,14 +80,19 @@ a {
 }
 
 .nav-links a:hover {
-  color: var(--cream);
+  color: var(--burgundy);
 }
 
 .nav-button,
 button {
   border: none;
-  background: linear-gradient(135deg, var(--olive), var(--olive-light));
-  color: var(--cream);
+  background: linear-gradient(
+    135deg,
+    #7b1e2b,
+    #a63a4a
+  );
+
+  color: white;
   padding: 14px 22px;
   border-radius: 14px;
   font-weight: 800;
@@ -139,11 +156,11 @@ button:disabled {
 
 .card,
 .form-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(123,30,43,0.08);
+  backdrop-filter: blur(20px);
   border-radius: 26px;
   padding: 28px;
-  backdrop-filter: blur(18px);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
 }
 
@@ -159,7 +176,7 @@ button:disabled {
 .card h2,
 .card h3 {
   margin-top: 0;
-  color: var(--cream);
+  color: var(--burgundy);
 }
 
 .card p {
@@ -189,7 +206,7 @@ button:disabled {
   margin-top: 0;
   margin-bottom: 24px;
   font-size: 42px;
-  color: var(--cream);
+  color: var(--burgundy);
 }
 
 input,
@@ -395,6 +412,7 @@ textarea::placeholder {
     font-size: 34px !important;
     line-height: 1.15 !important;
     overflow-wrap: anywhere;
+    color: var(--burgundy);
   }
 
   .card p {
