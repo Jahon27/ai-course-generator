@@ -2,7 +2,12 @@
   box-sizing: border-box;
 }
 
+html {
+  color-scheme: light;
+}
+
 :root {
+  color-scheme: light;
   --bg: #faf5ef;
 
   --surface: rgba(255,255,255,0.8);
@@ -23,6 +28,7 @@
 }
 
 body {
+  color-scheme: light;
   margin: 0;
   font-family: Inter, sans-serif;
 
@@ -702,4 +708,12 @@ textarea::placeholder {
 
 .auth-switch a:hover {
   color: var(--burgundy-light);
+}
+
+input,
+textarea,
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: light;
 }
