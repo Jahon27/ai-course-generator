@@ -141,7 +141,7 @@ export default function LessonDetails() {
   return (
     <div>
       <Link to={`/courses/${id}`}>
-        <button style={{ marginBottom: "24px" }}>← Back to Course</button>
+        <button className="back-button">← Back to Course</button>
       </Link>
 
       <div className="card" style={{ marginBottom: "32px" }}>
@@ -171,30 +171,22 @@ export default function LessonDetails() {
                       const isCorrect = option === q.answer;
                       const isSelected = selected === option;
 
-                      let background = "rgba(255,255,255,0.04)";
-                      let border = "1px solid rgba(255,255,255,0.08)";
+                      let optionClass = "quiz-option";
 
-                      if (answered && isCorrect) {
-                        background = "rgba(34,197,94,0.18)";
-                        border = "1px solid rgba(34,197,94,0.55)";
-                      }
+                        if (answered && isCorrect) {
+                          optionClass = "quiz-option correct";
+                        }
 
-                      if (answered && isSelected && !isCorrect) {
-                        background = "rgba(239,68,68,0.18)";
-                        border = "1px solid rgba(239,68,68,0.55)";
-                      }
+                        if (answered && isSelected && !isCorrect) {
+                          optionClass = "quiz-option wrong";
+                        }
 
                       return (
                         <button
                           key={i}
                           disabled={answered}
                           onClick={() => selectAnswer(index, option)}
-                          style={{
-                            textAlign: "left",
-                            background,
-                            border,
-                            color: "white",
-                          }}
+                          className={optionClass}
                         >
                           {option}
                         </button>

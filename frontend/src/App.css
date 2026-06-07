@@ -185,7 +185,7 @@ button:disabled {
   border-radius: 999px;
   background: rgba(123, 30, 43, 0.28);
   border: 1px solid rgba(166, 58, 74, 0.45);
-  color: var(--text);
+  color: var(--muted);
   font-size: 14px;
   font-weight: 800;
   margin-right: 8px;
@@ -390,7 +390,7 @@ textarea::placeholder {
   height: 56px;
   border-radius: 50%;
   background: var(--burgundy);
-  color: var(--muted);
+  color: #faf5ef;
   display: flex;
   align-items: center;
   justify-content: center;
