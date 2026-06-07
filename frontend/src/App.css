@@ -496,15 +496,27 @@ textarea::placeholder {
 
 .hero-section {
   text-align: center;
-  padding: 80px 0;
-  margin-bottom: 80px;
+  padding: 40px 0 50px;
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-size: 72px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 24px;
 }
 
 .hero-description {
   max-width: 760px;
-  margin: 24px auto 36px;
-  color: var(--muted);
-  font-size: 20px;
+  margin: 0 auto 36px;
+  font-size: 18px;
   line-height: 1.7;
-  text-align: center;
+  color: rgba(255,255,255,0.65);
 }
