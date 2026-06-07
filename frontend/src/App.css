@@ -224,7 +224,8 @@ textarea:focus {
 
 input::placeholder,
 textarea::placeholder {
-  color: rgba(236, 223, 204, 0.42);
+  color: var(--burgundy);
+  opacity: 0.55;
 }
 
 .progress-bar {

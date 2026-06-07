@@ -219,7 +219,7 @@ export default function Dashboard() {
                   Welcome back, {user.first_name || user.email.split("@")[0]}
                 </h2>
 
-                <p style={{ color: "rgba(255,255,255,0.65)" }}>
+                <p className="muted-text">
                   {user.occupation || "Add occupation"} ·{" "}
                   {user.interests || "Add interests"}
                 </p>
@@ -349,7 +349,7 @@ export default function Dashboard() {
               {progress.length}
             </p>
 
-            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+            <p className="muted-text">
               Active enrolled courses
             </p>
           </div>
@@ -361,7 +361,7 @@ export default function Dashboard() {
               {completedQuizzes}
             </p>
 
-            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+            <p className="muted-text">
               AI quizzes completed
             </p>
           </div>
@@ -373,7 +373,7 @@ export default function Dashboard() {
               {averageScore}%
             </p>
 
-            <p style={{ color: "rgba(255,255,255,0.6)" }}>
+            <p className="muted-text">
               Across all quiz attempts
             </p>
           </div>
