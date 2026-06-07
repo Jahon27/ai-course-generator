@@ -608,7 +608,7 @@ textarea::placeholder {
   text-align: left;
   background: rgba(255,255,255,0.72);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--muted);
   width: 100%;
   box-shadow: none;
 }
