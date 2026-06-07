@@ -27,7 +27,7 @@ function App() {
     <BrowserRouter>
       <div className="app">
         <nav className="navbar">
-          <Link className="logo" to="/">AI Course Generator</Link>
+          <Link className="logo" to="/">AIDA</Link>
           <button
               className="mobile-menu-button"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -43,8 +43,8 @@ function App() {
                     </div>
                   <div>
                    <div>
-                      <strong>{isLoggedIn ? "My Account" : "AI Course Generator"}</strong>
-                      <p>{isLoggedIn ? "Learning Dashboard" : "Learning Platform"}</p>
+                      <strong>{isLoggedIn ? "My Account" : "AIDA"}</strong>
+                      <p>{isLoggedIn ? "Learning Dashboard" : "AI-driven Learning Platform"}</p>
                     </div>
                   </div>
                 </div>

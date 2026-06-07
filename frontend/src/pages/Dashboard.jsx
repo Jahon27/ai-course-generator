@@ -185,7 +185,7 @@ export default function Dashboard() {
         );
 
       doc.setFontSize(14);
-      doc.text(`Issued by AI Course Generator`, 148, 185, {
+      doc.text(`Issued by AIDA`, 148, 185, {
         align: "center",
       });
 

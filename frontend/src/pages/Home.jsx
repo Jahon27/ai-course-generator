@@ -4,21 +4,26 @@ export default function Home() {
   return (
     <div>
       <section className="hero-section">
-        <h1 className="hero-title">
-          Learn Smarter with AI-Powered Education
-        </h1>
+          <h1 className="hero-title">
+            Welcome to AIDA
+          </h1>
 
-        <p className="hero-subtitle">
-          Discover structured courses, interactive lessons, and AI-generated
-          quizzes designed to make learning easier, faster, and more engaging.
-        </p>
+          <p className="hero-subtitle">
+            AI-driven Instructional Design Assistant
+          </p>
 
-        <Link to="/courses">
-          <button className="hero-button">
-            Get Started
-          </button>
-        </Link>
-      </section>
+          <p className="hero-description">
+            AIDA helps learners explore certified courses, understand complex topics
+            through clear lessons, and strengthen knowledge with AI-generated quizzes
+            after each module.
+          </p>
+
+          <Link to="/courses">
+            <button className="hero-button">
+              Get Started
+            </button>
+          </Link>
+        </section>
 
       <section className="card-grid">
         <div className="card">
@@ -90,7 +95,7 @@ export default function Home() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: "48px" }}>
-          <Link to="/courses">
+          <Link to="/ai-tools">
             <button style={{ fontSize: "18px", padding: "16px 32px" }}>
               Start Learning Today
             </button>
