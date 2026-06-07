@@ -126,7 +126,7 @@ button:disabled {
   margin-bottom: 20px;
   line-height: 1.1;
   letter-spacing: -0.05em;
-  color: var(--cream);
+  color: var(--muted);
 }
 
 .page-subtitle {
@@ -216,7 +216,7 @@ textarea {
   border-radius: 14px;
   border: 1px solid var(--border);
   background: rgba(236, 223, 204, 0.05);
-  color: var(--cream);
+  color: var(--muted);
   margin-top: 8px;
   outline: none;
 }
@@ -266,7 +266,7 @@ textarea::placeholder {
 .lesson-content h1,
 .lesson-content h2,
 .lesson-content h3 {
-  color: var(--cream);
+  color: var(--muted);
 }
 
 .lesson-content pre {
@@ -394,7 +394,7 @@ textarea::placeholder {
   height: 56px;
   border-radius: 50%;
   background: var(--burgundy);
-  color: var(--cream);
+  color: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -442,7 +442,7 @@ textarea::placeholder {
   width: 82px;
   height: 82px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--olive), var(--olive-light));
+  background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
   display: flex;
   align-items: center;
   justify-content: center;
