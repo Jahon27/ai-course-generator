@@ -268,7 +268,7 @@ http://localhost:8000/docs
 
 **Jahonoro Tojieva**
 
-Cloud Computing and DevOps Semester Project
+DevOps and Cloud engineering on Azure Semester Project
 
 Eötvös Loránd University – Faculty of Informatics
 
